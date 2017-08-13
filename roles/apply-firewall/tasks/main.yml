@@ -1,0 +1,10 @@
+- name: apply firewall config for role 
+  template:
+    src: "{{ role_firewall_config }}" 
+    dest: "/etc/nftables/{{ role_firewall_config.split('/')[-1] }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - update nftables
+    - restart nftables

@@ -1,0 +1,14 @@
+- name: ensure nftables is installed
+  apt:
+    name: nftables
+    state: present
+
+- name: ensure nftables config directory exists
+  file: 
+    path: /etc/nftables 
+    state: directory
+
+- name: ensure nftables starts on boot
+  service:
+    name: nftables
+    enabled: true

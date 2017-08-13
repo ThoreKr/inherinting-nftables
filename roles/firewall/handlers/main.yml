@@ -1,0 +1,22 @@
+# Generate a config of all files in /etc/nftables/ and include them in /etc/nftables.conf
+- name: get config files
+  shell: ls /etc/nftables/
+  register: role_conf_files
+  listen: update nftables
+
+- name: update /etc/nftables.conf
+  template: 
+    src: nftables.conf.j2 
+    dest: /etc/nftables.conf 
+    owner: root 
+    group: root 
+    mode: 0644
+  with_items:
+    - role_conf_files.stdout_lines
+  when: role_conf_files
+  listen: update nftables
+
+- name: restart nftables
+  service: 
+    name: nftables 
+    state: restarted
